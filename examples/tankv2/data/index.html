@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Motor Control</title>
+  <link href='https://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="144x144"  href="/favicon-144x144.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="/favicon.ico">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#00878f">
+  <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport'>
+  <style type="text/css">
+  h2 {
+    font-family: sans-serif;
+    text-align: center;
+  }
+  input {
+    display: block;
+    margin: auto;
+    width: 200pt;
+  }
+  button {
+    display: block;
+    margin: 12px auto;
+  }
+  body{
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  .triangle-up {
+    width: 0;
+    height: 0;
+    border-left: 40px solid transparent;
+    border-right: 40px solid transparent;
+    border-bottom: 80px solid #ADFF2F;
+  }
+  .triangle-down {
+    width: 0;
+    height: 0;
+    border-left: 40px solid transparent;
+    border-right: 40px solid transparent;
+    border-top: 80px solid #ADFF2F;
+  }
+  .triangle-left {
+    width: 0;
+    height: 0;
+    border-top: 40px solid transparent;
+    border-right: 80px solid #ADFF2F;
+    border-bottom: 40px solid transparent;
+  }
+  .triangle-right {
+    width: 0;
+    height: 0;
+    border-top: 40px solid transparent;
+    border-left: 80px solid #ADFF2F;
+    border-bottom: 40px solid transparent;
+  }
+  .circle {
+    height: 50px;
+    width: 80px;
+    background-color: #ADFF2F;
+    border-radius: 50%;
+  }
+  .square {
+    height: 50px;
+    width: 80px;
+    background-color: #ADFF2F;
+  }
+</style>
+  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script type='text/javascript'>
+
+    var myVarTimeDate = setInterval(myTimer, 100);
+
+    var fw = '0';
+    var bw = '0';
+    var left = '0';
+    var right = '0';
+    var fire = '0';
+    var left_canon = '0';
+    var right_canon = '0';
+
+    var MOTOSPEED = 800;
+
+    function myTimer() {
+      var d = new Date();
+      document.getElementById("datetime").innerHTML = d.toLocaleTimeString();
+    }
+
+    function sendCmd(command) {
+      var http = new XMLHttpRequest();
+      http.open('GET', command, true);
+      http.send();
+    }
+
+    function mouseDown() {
+      var x = event.target.id;
+      if(x=="fw"){
+        document.getElementById(x).style.borderBottomColor = 'red'
+      }else if(x=="bw"){
+        document.getElementById(x).style.borderTopColor = 'red'
+      }else if(x=="left"){
+        document.getElementById(x).style.borderRightColor = 'red'
+      }else if(x=="right"){
+        document.getElementById(x).style.borderLeftColor = 'red'
+      }else if(x=="left_canon"){
+        document.getElementById(x).style.backgroundColor = 'red'
+      }else if(x=="right_canon"){
+        document.getElementById(x).style.backgroundColor = 'red'
+      }else{
+        document.getElementById(x).style.backgroundColor = 'red'
+      }
+      var cmd = "/"+x+"ON"
+      sendCmd(cmd)
+      document.getElementById("debug").innerHTML = cmd
+      //onmousedown="mouseDown();" onmouseup="onmouseup();" 
+    }
+
+    function mouseUp(){
+      var x = event.target.id;
+      if(x=="fw"){
+        document.getElementById(x).style.borderBottomColor = '#ADFF2F'
+      }else if(x=="bw"){
+        document.getElementById(x).style.borderTopColor = '#ADFF2F'
+      }else if(x=="left"){
+        document.getElementById(x).style.borderRightColor = '#ADFF2F'
+      }else if(x=="right"){
+        document.getElementById(x).style.borderLeftColor = '#ADFF2F'
+      }else if(x=="left_canon"){
+        document.getElementById(x).style.backgroundColor = '#ADFF2F'
+      }else if(x=="right_canon"){
+        document.getElementById(x).style.backgroundColor = '#ADFF2F'
+      }else{
+        document.getElementById(x).style.backgroundColor = '#ADFF2F'
+      }
+      var cmd = "/"+x+"OFF"
+      sendCmd(cmd)
+      document.getElementById("debug").innerHTML = cmd
+      //onmousedown="mouseDown();" onmouseup="onmouseup();" 
+    }
+
+  </script>
+</head>
+
+<body>
+  <center>
+    <header>
+      <h1>Tank Control</h1>
+    </header>
+    <div>
+      <div class = "triangle-up" ontouchstart="mouseDown();" ontouchend="mouseUp();" id="fw"></div>
+      <table style="width:100%">
+        <tr>
+          <td>
+              <br />
+              <br />
+          </td>
+        </tr>
+        <tr>
+          <th class = "triangle-left" ontouchstart="mouseDown();" ontouchend="mouseUp();" id="left" style="position: relative; top: 0 px; left: -60px"></th>
+          <th class = "circle" ontouchstart="mouseDown();" ontouchend="mouseUp();" id="fire" style="position: relative; top: 0 px; left: 0"></th>
+          <th class = "triangle-right" ontouchstart="mouseDown();" ontouchend="mouseUp();" id="right" style="position: relative; top: 0 px; left: 60px"></th>
+        </tr>
+        <tr>
+            <td>
+                <br />
+                <br />
+            </td>
+        </tr>
+      </table>
+      <table>
+        <tr>
+          <th class = "square" ontouchstart="mouseDown();" ontouchend="mouseUp();" id="left_canon" style="position: relative; top: 0 px; left: -60px"></th>
+          <th class = "triangle-down" ontouchstart="mouseDown();" ontouchend="mouseUp();" id="bw" style="position: relative; top: 0 px; left: 0px"></th>
+          <th class = "square" ontouchstart="mouseDown();" ontouchend="mouseUp();" id="right_canon" style="position: relative; top: 0 px; left: 60px"></th>
+        </tr>
+      </table>
+      <p id="datetime"></p>
+      <p id="debug"></p>
+    </div>
+  </center>
+</body>
+</html>
